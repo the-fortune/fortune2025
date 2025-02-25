@@ -5,9 +5,10 @@
 
 # 게임에서 사용할 캐릭터를 정의합니다.
 
-define act_PreNarator = Character(None, image="Narator", kind = nvl, retain=True, color = "#171718")
 
-define act_Narator = Character(None, image="Narator", kind = nvl, retain=True, color = "#030118")
+define act_PreNarator = Character(None, kind = nvl, retain=False, color = "#f18f0e", what_color="#0918e9", ctc="ctc_blink", ctc_pause="ctc_blink", ctc_position="fixed")
+
+define act_Narator = Character(None, kind = nvl, retain=False, color = "#e47113",what_color="#0d2cda", ctc="ctc_blink", ctc_pause="ctc_blink", ctc_position="fixed")
 
 # label splashscreen:
 #     scene black
@@ -20,6 +21,14 @@ define act_Narator = Character(None, image="Narator", kind = nvl, retain=True, c
     # with Pause(1)
     # hide text with dissolve
 #     return
+
+# 캐릭터가 대사를 마치고, 클릭 이미지를 표시합니다.
+image ctc_blink:
+    "images/hand-click.png"
+    zoom 0.2
+    linear 0.75 alpha 1.0
+    linear 0.75 alpha 0.0
+    repeat 
 
 image splash:
     "images/sebastiaan.jpg"
@@ -52,11 +61,15 @@ image bgMyRoom:
 
 image imActorMain:
     "images/sebastiaan.jpg"
-    zoom 0.1
+    zoom 0.05
 
 image imActorSub:
     "images/sebastiaan.jpg"
-    zoom 0.1
+    zoom 0.05
+
+image imgClickIt:
+    "images/hand-click.png"
+    zoom 3.0
 
 
 # 여기에서부터 게임이 시작합니다.
@@ -71,8 +84,6 @@ label start:
     play music "audio/relaxing-piano-music-275681.mp3" fadein 1.5 loop
 
     call juyuk_description
-
-    scene black with dissolve
 
     scene black
 
@@ -102,13 +113,16 @@ label start:
                 show imActorSub at right with moveintop
 
                 nvl clear
-                act_Narator "이제,괘에 대한 주역 해설을 봅시다"
-                nvl clear
+                show text "{cps=10}이제,괘에 대한 주역 해설을 봅시다.{/cps}" with moveinbottom
+                with Pause(2.0)
+                hide text
+                
+                # 대사 출력을 테스트 해 볼떄 사용할 수 있습니다.
                 # $ itemString = "111111"
 
                 call juyuk_jump_bricks
 
-                act_Narator "end"
+                act_Narator " end " with moveinbottom 
 
                 nvl clear
                 hide imActorTap
@@ -120,7 +134,7 @@ label start:
                 show text "{alpha=0.1}주역의 괘로 운명의 향방을 물어 보는 것은{/alpha}" with moveinright
                 with Pause(2)
                 hide text with dissolve
-                show text "한꺼번에 여러번 질문 하는것 보다는" with dissolve
+                show text "한꺼번에 여러번 질문 하는것 보다는" with moveinright
                 with Pause(2)
                 hide text with dissolve
                 show text "잠시 쉬었다가, 장소와 기분을 새롭게 한 후에 해보시기를 권합니다." with moveinright
@@ -311,22 +325,23 @@ label assemble_ramdom_bricks:
     show text "먼저, 여섯 괘를 정해 봅시다.!" with moveinright
     with Pause(0.8)
     hide text
-    show text "천천히 화면을 터치해 주세요!" with moveinleft
-    with Pause(0.8)
-    hide text
+    # show text "천천히 화면을 터치해 주세요!" with moveinleft
+    # with Pause(0.8)
+    # hide text
     nvl clear
 
     while itemCount < 6:
-        $ randomExplainNum = renpy.random.randint(0,999)%10
+        $ randomExplainNum = renpy.random.randint(0,99898)%10
 
         if itemCount % 3 == 0:
             nvl clear
-        # act_PreNarator "[explainMessage[randomExplainNum]]" 
-        # show text "{cps=20}[explainMessage[randomExplainNum]]{/cps}" with dissolve
+
         $ randomChoice = renpy.random.choice(explainMessage)
-        # show text "{cps=20}[randomChoice]{/cps}" with dissolve
-        # with Pause(0.8)
-        act_PreNarator "{cps=20}[randomChoice]{/cps}     click." 
+        # 캐릭터를 이용해서 말하면, 매번 클릭해야 합니다.
+        # act_PreNarator "{cps=20}[randomChoice]{/cps}"
+        show text "{cps=10}[randomChoice]{/cps}" with moveinbottom
+        with Pause(2.0)
+        hide text  
         $ randomValue = renpy.random.randint(0,999)%2+1
         $ itemString += str(randomValue)
         $ itemCount += 1
