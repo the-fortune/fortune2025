@@ -1,0 +1,10 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/script.rpy", line 94: end of line expected.
+    show imActorTap at left moveinright
+                            ^
+
+Ren'Py Version: Ren'Py 8.3.4.24120703
+Tue Feb 25 21:05:23 2025
