@@ -1,0 +1,73 @@
+
+D:\Projects\renpy\renpy-8.3.4-sdk\rapt\project 경로를 별도의 위치에 복사한다.
+Gradle를 업그레이드 해야 했다.
+그리고, 빌드가 안될때는 Clean, Gradle Sync를 반복해 줘야 한다.
+
+Renpy로 프로그램을 작성한다.
+Renpy의 Python 프로젝트 폴더를 복사해서, 별도의 경로에 둔다.
+이 경로를 Android Studio를 이용해서 오픈한다.
+
+프로젝트 생성시 키값들을 잘 보관하여야 한다. 특히 Renpy에서 생성해주는 AppKey.
+
+
+1) 
+D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\build.gradle
+
+ minSdkVersion 24
+...
+ implementation 'com.google.android.gms:play-services-ads:24.0.0'
+
+2) D:\Projects\renpy\AndroidStudio\Renpy\project\app\src\main\AndroidManifest.xml
+<application
+...
+      <meta-data
+          android:name="com.google.android.gms.ads.APPLICATION_ID"
+          android:value="ca-app-pub-2726657770670880~3838995046"/> ---> 이 정보는 계정 App아이디..
+
+
+3) D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml
+
+<uses-permission android:name="android.permission.INTERNET" />
+
+D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\src\main\AndroidManifest.xml
+
+ <uses-permission android:name="android.permission.INTERNET" />
+
+
+4) SDLActivity.java 에 내용 추가.
+
+
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
+
+    protected void onCreate(Bundle savedInstanceState) 에 추가한다.
+
+        // 다음은 활동 내 백그라운드 스레드에서 initialize() 메서드를 호출하는 방법을 보여주는 예입니다.
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                })
+                .start();
+
+
+        // Create a new ad view.
+        AdView adView = new AdView(this);
+
+        // 베너광고의 아이디를 사용한다.
+        adView.setAdUnitId("ca-app-pub-2726657770670880/5156183823");  --> 이 정보는 App에 게재할 배너 광고 아이디.
+//        adView.setAdSize(getAdSize());
+        adView.setAdSize(AdSize.SMART_BANNER);
+
+        // Start loading the ad in the background.
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        mLayout.addView(adView);
+        adView.loadAd(adRequest);
+
+
+
+
+build.gradle에 최소 버젼을 올려 주어야 했다. 21 -> 23
