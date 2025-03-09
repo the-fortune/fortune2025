@@ -35,7 +35,7 @@ D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\src\main\AndroidManif
 
 
 4) SDLActivity.java 에 내용 추가.
-
+D:\Projects\renpy\AndroidStudio\Renpy0309\project\renpyandroid\src\main\java\org\libsdl\app
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.AdSize;
