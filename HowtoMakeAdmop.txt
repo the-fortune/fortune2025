@@ -10,6 +10,9 @@ Renpy의 Python 프로젝트 폴더를 복사해서, 별도의 경로에 둔다.
 프로젝트 생성시 키값들을 잘 보관하여야 한다. 특히 Renpy에서 생성해주는 AppKey.
 
 
+uses-sdk:minSdkVersion 21 cannot be smaller than version 24 declared in library...
+오류는 build.gradle에서 minSdkVersion 버젼을 찾아서 수정.
+
 1) 
 D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\build.gradle
 
@@ -27,9 +30,11 @@ D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\build.gradle
 
 3) D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml
 
+
+
 <uses-permission android:name="android.permission.INTERNET" />
 
-D:\Projects\renpy\AndroidStudio\Renpy\project\renpyandroid\src\main\AndroidManifest.xml
+D:\Projects\renpy\AndroidStudio\Renpy\project\app\src\main\AndroidManifest.xml
 
  <uses-permission android:name="android.permission.INTERNET" />
 
@@ -44,6 +49,9 @@ import com.google.android.gms.ads.AdRequest;
 
     protected void onCreate(Bundle savedInstanceState) 에 추가한다.
 
+        ...
+        setContentView(mLayout);
+
         // 다음은 활동 내 백그라운드 스레드에서 initialize() 메서드를 호출하는 방법을 보여주는 예입니다.
         new Thread(
                 () -> {
@@ -53,6 +61,16 @@ import com.google.android.gms.ads.AdRequest;
                 .start();
 
 
+        .....
+        // Get filename from "Open with" of another application
+        Intent intent = getIntent();
+        if (intent != null && intent.getData() != null) {
+            String filename = intent.getData().getPath();
+            if (filename != null) {
+                Log.v(TAG, "Got filename: " + filename);
+                SDLActivity.onNativeDropFile(filename);
+            }
+        }
         // Create a new ad view.
         AdView adView = new AdView(this);
 
