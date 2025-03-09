@@ -1,0 +1,36 @@
+
+App의 아이콘 및 로딩 이미지에 대한 설명 링크
+https://www.renpy.org/doc/html/android.html#android-presplash
+
+
+내용.
+Icon and Presplash Imageslink
+Iconlink
+Ren'Py will create an icon from your app from two files in the game's base directory:
+
+android-icon_foreground.png
+The foreground layer of the icon. This should be 432x432 pixels and transparent.
+
+android-icon_background.png
+The background layer of the icon. This should be 432x432 pixels and opaque.
+
+Android adaptive icons work by masking the two layers of the icon to an area that is at least 132x132 pixels, in the center. The area outside of this safe space may be shown, but it might be masked out, too. Bleeding outside of the safe area is encouraged. The two layers might move a little relative to each other when the icon is dragged around.
+
+For more information about adaptive icons, please check out:
+
+https://medium.com/google-design/designing-adaptive-icons-515af294c783
+
+Note that 1dp corresponds to 4 actual pixels.
+
+When generating the application, Ren'Py will convert these files to an appropriate size for each device, and will generate static icons for devices that do not support adaptive icons.
+
+Presplashlink
+The presplash is shown before Ren'Py fully loads, before the main splashscreen starts. It's especially important on Android, as the first time Ren'Py runs it will unpack supporting files, which make take some time.
+
+android-presplash.jpg
+The image that's used when the app is loading. This should be surrounded by 1px of a monocolored border. When displayed, the image is scaled to fit available space while preserving aspect ratio, and the rest of the screen is filled with the border color.
+
+android-downloading.jpg
+The image that's used when the app is downloading assets from Google Play Asset delivery. This should be surrounded by 1px of a monocolored border. When displayed, the image is scaled to fit available space while preserving aspect ratio, and the rest of the screen is filled with the border color.
+
+A 20px-high progress bar is displayed 20px from the bottom, left, and right sides of the screen, showing download progress.

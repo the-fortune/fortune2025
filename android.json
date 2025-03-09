@@ -1,0 +1,24 @@
+{
+    "expansion": false,
+    "google_play_key": null,
+    "google_play_salt": null,
+    "heap_size": "4",
+    "icon_name": "\ub354\uc6b4\uc138",
+    "include_pil": false,
+    "include_sqlite": false,
+    "layout": null,
+    "name": "\ub354 \u904b\u52e2(\uc6b4\uc138)",
+    "numeric_version": 1,
+    "orientation": "portrait",
+    "package": "com.oarchi.thefortune",
+    "permissions": [
+        "VIBRATE",
+        "INTERNET"
+    ],
+    "source": false,
+    "store": "play",
+    "update_always": true,
+    "update_icons": true,
+    "update_keystores": true,
+    "version": "1.0"
+}
