@@ -74,8 +74,11 @@ import com.google.android.gms.ads.AdRequest;
         // Create a new ad view.
         AdView adView = new AdView(this);
 
-        // 베너광고의 아이디를 사용한다.
-        adView.setAdUnitId("ca-app-pub-2726657770670880/5156183823");  --> 이 정보는 App에 게재할 배너 광고 아이디.
+        // 이 아이디는 내가 등록한 베너광고 아이디이다. 이 아이디를 사용하면 무효 클릭이 되고, 계정 중지 될수도 있다.
+        // adView.setAdUnitId("ca-app-pub-2726657770670880/5156183823");
+        // 테스트용 광고 아이디. ca-app-pub-3940256099942544/6300978111 이 광고 아이디를 사용하면, 상단에 좀 큰 광고가 게재된다.
+        // 여러 형태의 광고를 앱에 여기 저기 심을수도 있겠다. 나라별로 동의가 필요한 경우가 있다.
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
 //        adView.setAdSize(getAdSize());
         adView.setAdSize(AdSize.SMART_BANNER);
 
