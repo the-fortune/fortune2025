@@ -293,19 +293,19 @@ style quick_button_text:
 
 screen navigation():
     vbox:
-        align (0.5, 0.5)  # 화면 중앙에 배치
-        spacing 50  # 버튼 사이 간격
+        align (0.5, 0.7)  # 화면 중앙에 배치
+        spacing 60  # 버튼 사이 간격
 
         # "게임 시작" 이미지 버튼
         imagebutton:
-            idle "images/start_btn.jpg"  # 기본 상태 이미지
-            hover "images/start_btn.jpg"  # 호버 상태 이미지
+            idle "images/start_btn.png"  # 기본 상태 이미지
+            hover "images/start_btn.png"  # 호버 상태 이미지
             action Start()  # 게임 시작
 
         # "게임 종료" 이미지 버튼
         imagebutton:
-            idle "images/quit_btn.jpg"  # 기본 상태 이미지
-            hover "images/quit_btn.jpg"  # 호버 상태 이미지
+            idle "images/quit_btn.png"  # 기본 상태 이미지
+            hover "images/quit_btn.png"  # 호버 상태 이미지
             action Quit(confirm=False)  # 게임 종료  
 
     # vbox:

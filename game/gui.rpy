@@ -68,22 +68,22 @@ define gui.name_text_font = "SourceHanSansLite.ttf"
 define gui.interface_text_font = "SourceHanSansLite.ttf"
 
 ## 일반 대사의 글자 크기입니다.
-define gui.text_size = 45
+define gui.text_size = 50
 
 ## 캐릭터 이름의 글자 크기입니다.
-define gui.name_text_size = 45
+define gui.name_text_size = 40
 
 ## 게임의 유저 인터페이스에서 글자의 크기입니다.
 define gui.interface_text_size = 45
 
 ## 게임의 유저 인터페이스에서 레이블(label)들의 글자 크기입니다.
-define gui.label_text_size = 45
+define gui.label_text_size = 60
 
 ## 통지(notify) 화면의 글자 크기입니다.
-define gui.notify_text_size = 24
+define gui.notify_text_size = 50
 
 ## 게임의 타이틀(title) 글자의 크기입니다.
-define gui.title_text_size = 75
+define gui.title_text_size = 60
 
 
 ## 메인과 게임 메뉴들 ##################################################################
