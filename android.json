@@ -3,14 +3,14 @@
     "google_play_key": null,
     "google_play_salt": null,
     "heap_size": "3",
-    "icon_name": "\ub354TMY",
+    "icon_name": "TheFortune",
     "include_pil": false,
     "include_sqlite": false,
     "layout": null,
-    "name": "TheWoonMyung",
+    "name": "TheFortune",
     "numeric_version": 1,
     "orientation": "portrait",
-    "package": "com.oarchi.thewoonmyung",
+    "package": "com.oarchi.thefortune",
     "permissions": [
         "VIBRATE",
         "INTERNET"

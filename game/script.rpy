@@ -177,19 +177,29 @@ screen ending_button():
         imagebutton:
             idle "images/again_btn.png"  # 기본 상태 이미지
             hover "images/again_btn.png"  # 호버 상태 이미지
-            action [Jump("juyuk_jump_bricks"), Function(btn_clicked_function)]
+            action Call("juyuk_jump_bricks")
+            # action [Jump("juyuk_jump_bricks"), Function(btn_clicked_function)]
 
         # "About" 이미지 버튼
         imagebutton:
             idle "images/about_btn.png"  # 기본 상태 이미지
             hover "images/about_btn.png"  # 호버 상태 이미지
-            action [Jump("about_app"), Function(btn_clicked_function)]
+            action Call("about_app")
+            # action [Jump("about_app"), Function(btn_clicked_function)]
 
         # "후원하기" 이미지 버튼
         imagebutton:
             idle "images/share_btn.png"  # 기본 상태 이미지
             hover "images/share_btn.png"  # 호버 상태 이미지
-            action [Jump("share_app"), Function(btn_clicked_function)]
+            action Call("share_app")
+            # action [Jump("share_app"), Function(btn_clicked_function)]
+
+        # "다시하기" 이미지 버튼
+        imagebutton:
+            idle "images/start_btn.png"  # 기본 상태 이미지
+            hover "images/start_btn.png"  # 호버 상태 이미지
+            # $ renpy.full_restart()
+            action [Jump("start"), Function(btn_clicked_function)]
 
         # "게임 종료" 이미지 버튼
         imagebutton:
@@ -209,7 +219,7 @@ label start:
     # show scene my_start_button
     # pause
 
-    scene bgBegin with fade   
+    scene bgBegin 
 
     # play music "audio/relaxing-piano-music-275681.mp3" fadein 1.5 loop
 
@@ -407,35 +417,15 @@ label juyuk_description:
     return
 
 label juyuk_ending:
-    nvl clear
-    scene bgBegin with moveinbottom
+    
 
-    call screen ending_button
+    while game_quit == False:
 
-    # while game_quit == False:
-    #     menu:
-    #         # "저장하기":
-    #         #     with Pause(1)
-    #         #     show text "구현중"
-    #         #     with Pause(2)
-    #         #     hide text with dissolve
-    #         "다시보기":
-    #             # $ admob_html_file = "admob_ad_sample.html"
-    #             # $ webbrowser.open("file://" + renpy.loader.transfn(admob_html_file))
-
-    #             scene bgMain with fade
-    #             call juyuk_jump_bricks from _call_juyuk_jump_bricks_1
-    #         "About...":
-    #             call about_app from _call_about_app    
-    #         "후원하기":
-    #             call share_app from _call_share_app
-    #         "다시하기":
-    #             $ renpy.full_restart()         
-    #         "나가기":
-    #             $ game_quit = True
-    #             $ renpy.quit()
+        scene bgBegin
+        call screen ending_button
 
     scene bgBegin with dissolve
+
     return
 
 label share_app:

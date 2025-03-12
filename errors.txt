@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 194: expected a keyword argument or child statement.
-    $ game_quit = True
+File "game/script.rpy", line 201: expected a keyword argument or child statement.
+    $ renpy.full_restart()
     ^
 
 Ren'Py Version: Ren'Py 8.3.6.25022803
-Wed Mar 12 23:47:11 2025
+Thu Mar 13 06:54:30 2025
