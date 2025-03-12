@@ -292,9 +292,11 @@ style quick_button_text:
 ## 시작/종료할 수 있게 합니다.
 
 screen navigation():
+
+    add "images/MainMenu.jpg"
     vbox:
         align (0.5, 0.7)  # 화면 중앙에 배치
-        spacing 60  # 버튼 사이 간격
+        spacing 100  # 버튼 사이 간격
 
         # "게임 시작" 이미지 버튼
         imagebutton:
@@ -302,11 +304,11 @@ screen navigation():
             hover "images/start_btn.png"  # 호버 상태 이미지
             action Start()  # 게임 시작
 
-        # "게임 종료" 이미지 버튼
-        imagebutton:
-            idle "images/quit_btn.png"  # 기본 상태 이미지
-            hover "images/quit_btn.png"  # 호버 상태 이미지
-            action Quit(confirm=False)  # 게임 종료  
+        # # "게임 종료" 이미지 버튼
+        # imagebutton:
+        #     idle "images/quit_btn.png"  # 기본 상태 이미지
+        #     hover "images/quit_btn.png"  # 호버 상태 이미지
+        #     action Quit(confirm=False)  # 게임 종료  
 
     # vbox:
     #     style_prefix "navigation"

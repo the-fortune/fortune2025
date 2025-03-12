@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 44: invalid syntax
-                linear renpy.random.uniform(1.5, 3.0) xpos end_x ypos end_y alpha 0.0 rotate rotate  
-                        ^
+File "game/script.rpy", line 422: expected statement.
+    action Quit(confirm=False)  
+               ^
 
-Ren'Py Version: Ren'Py 8.3.4.24120703
-Sun Mar  9 21:53:18 2025
+Ren'Py Version: Ren'Py 8.3.6.25022803
+Tue Mar 11 22:29:31 2025

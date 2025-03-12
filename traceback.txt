@@ -1,79 +1,34 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
-While processing text tag {size} in '\n        {size=75}{b}곤위지 (坤爲地){/b}{size}\n\n        위의 괘는 땅(地)이고 아래 괘도 땅(地)이다.\n        모두 땅을 상징하는 곤괘(坤卦)로 구성되어 있어 지(地)라고 하였다.\n        여섯 개의 효(爻)가 모두 음(陰,으로 하늘의 기를 받아들여 만물을 포용하고 양육시키는 어머니와 같다.\n        곤(坤)이 없으면 건(乾)의 위대한 힘이 발휘되지 못한다. 곤(坤)의 속성은 순응하다.\n        지극하다라는 뜻이다. 이 괘를 얻은 사람은 포용력과 인내를 가지고 유순한 마음으로 맡은 일에 충실해야 한다.\n        또 봉사하는 자세로 사람들을 포용하고 사랑을 베풀어야 한다.\n        자신의 능력을 과시하여 명성을 얻으려 하면 불상사가 생긴다.\n        남을 돕더라도 남의 모르게 돕고, 영광이 돌아오더라도 남에게 돌려야 한다.\n        말과 행동을 조심해야 한다.\n        현재의 운세는 비교적 침체된 상태지만 머지않아 성운(成運)을 맞을 수 있다.\n        윗사람이나 선배의 뜻에 잘 따라라.\n        자신의 공적을 과시하려는 생각을 가지지 말고 남을 도와 그늘에서 묵묵히 일하라.\n        부하가 상사를 앞지르려고 한다거나 아내가 남편을 앞서려고 하면 반드시 불상사가 일어난다.\n        사업 확장이나 신규 사업에 착수하는 것은 좋지 않으므로 당분간 내실을 꾀하면서 관망하는 것이 좋다.\n        '.:
-  File "game/script.rpy", line 194, in script call
-    call juyuk_jump_bricks
-  File "game/script.rpy", line 264, in script call
-    call g_222222
-  File "game/script.rpy", line 823, in script call
-    call display_bricks_message_v3(g_exp_messages)
-  File "game/script.rpy", line 687, in script
-    $ renpy.pause()
-  File "game/script.rpy", line 687, in <module>
-    $ renpy.pause()
-Exception: empty value supplied for tag 'size'
+While running game code:
+  File "game/script.rpy", line 196, in script call
+    call juyuk_ending from _call_juyuk_ending
+  File "game/script.rpy", line 437, in script call
+    call share_app from _call_share_app
+  File "game/script.rpy", line 451, in script
+    $ renpy.android.open_url("file:///admob_ad_sample.html")
+  File "game/script.rpy", line 451, in <module>
+    $ renpy.android.open_url("file:///admob_ad_sample.html")
+AttributeError: 'bool' object has no attribute 'open_url'
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 194, in script call
-    call juyuk_jump_bricks
-  File "game/script.rpy", line 264, in script call
-    call g_222222
-  File "game/script.rpy", line 823, in script call
-    call display_bricks_message_v3(g_exp_messages)
-  File "game/script.rpy", line 687, in script
-    $ renpy.pause()
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\ast.py", line 827, in execute
+  File "game/script.rpy", line 196, in script call
+    call juyuk_ending from _call_juyuk_ending
+  File "game/script.rpy", line 437, in script call
+    call share_app from _call_share_app
+  File "game/script.rpy", line 451, in script
+    $ renpy.android.open_url("file:///admob_ad_sample.html")
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 834, in execute
     renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\python.py", line 1178, in py_exec_bytecode
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1184, in py_exec_bytecode
     exec(bytecode, globals, locals)
-  File "game/script.rpy", line 687, in <module>
-    $ renpy.pause()
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\exports\statementexports.py", line 194, in pause
-    rv = renpy.ui.interact(mouse='pause', type='pause', roll_forward=roll_forward, pause=delay, pause_modal=modal)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\ui.py", line 301, in interact
-    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\core.py", line 2215, in interact
-    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, pause_modal=pause_modal, **kwargs) # type: ignore
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\core.py", line 2879, in interact_core
-    self.draw_screen(root_widget, fullscreen_video, (not fullscreen_video) or video_frame_drawn)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\core.py", line 1381, in draw_screen
-    surftree = renpy.display.render.render_screen(
-  File "render.pyx", line 486, in renpy.display.render.render_screen
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\layout.py", line 900, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 170, in renpy.display.render.render
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\layout.py", line 900, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 170, in renpy.display.render.render
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\layout.py", line 900, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 170, in renpy.display.render.render
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\transform.py", line 1056, in render
-    return RenderTransform(self).render(width, height, st, at)
-  File "accelerator.pyx", line 994, in renpy.display.accelerator.RenderTransform.render
-  File "accelerator.pyx", line 427, in renpy.display.accelerator.RenderTransform.render_child
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\image.py", line 513, in render
-    return wrap_render(self.target, width, height, st, at)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\display\image.py", line 316, in wrap_render
-    rend = render(child, w, h, st, at)
-  File "render.pyx", line 170, in renpy.display.render.render
-  File "render.pyx", line 260, in renpy.display.render.render
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\text\text.py", line 2600, in render
-    virtual_layout = Layout(self, width, height, renders, drawable_res=False, size_only=True)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\text\text.py", line 730, in __init__
-    self.paragraphs = self.segment(text.tokens, style, renders, text)
-  File "D:\Projects\renpy\renpy-8.3.4-sdk\renpy\text\text.py", line 1400, in segment
-    raise Exception("empty value supplied for tag %r" % tag)
-Exception: empty value supplied for tag 'size'
+  File "game/script.rpy", line 451, in <module>
+    $ renpy.android.open_url("file:///admob_ad_sample.html")
+AttributeError: 'bool' object has no attribute 'open_url'
 
 Windows-10-10.0.19045 AMD64
-Ren'Py 8.3.4.24120703
+Ren'Py 8.3.6.25022803
 circle64love 1.0
-Sun Mar  9 22:10:55 2025
+Tue Mar 11 20:24:45 2025
