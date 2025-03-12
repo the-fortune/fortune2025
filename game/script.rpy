@@ -116,13 +116,13 @@ image imgClickIt:
     zoom 3.0
 
 image splash:
-    "images/android-downloading.jpg"
+    "images/FirstBg.jpg"
     # zoom 0.5
 
 label splashscreen:
     # 동영상으로 loading 하려면
     # $ renpy.movie_cutscene('splash.webm')
-    scene bgDualCircle
+    # scene bgDualCircle
     # play music "audio/whip-afro-dancehall-music-110235.mp3" fadein 1.0
     with Pause(1)
     show splash with dissolve
@@ -131,10 +131,10 @@ label splashscreen:
     with Pause(1)
     hide text with dissolve
     with Pause(1)
-    show text " {cps=2}{size=+40}{color=#000000}주역 지혜로 보는\n{b}운세 (運勢) 풀이{/b}.{/color}{/size}{/cps} " with moveinbottom
+    show text " {cps=2}{size=+40}{color=#000000}옛 사람들의 지혜를 나누는\n{b}운세 (運勢) 풀이{/b}.{/color}{/size}{/cps} " with moveinbottom
     with Pause(3)
     hide text with dissolve
-    scene bgDualCircle with dissolve
+    # scene bgDualCircle with dissolve
     # stop music fadeout 1.0
     with Pause(1)
     return
@@ -164,18 +164,39 @@ screen my_start_button():
             hover "images/quit_btn.png"  # 호버 상태 이미지
             action Quit(confirm=False)  # 게임 종료  
 
-screen multiline_text:
-    window:
-        xmaximum 1940 # 텍스트 박스의 최대 너비
-        ymaximum 2600 # 텍스트 박스의 최대 너비 
+init python:
+    def btn_clicked_function():
+        renpy.notify("Button clicked!")
 
-# 스타일 정의
-style body_text_style:
-    color "#101011"  # 텍스트 색상 (16진수 색상 코드)
-    size 50  # 텍스트 크기
-    # outlines [(2, "#000000", 0, 0)]  # 검은색 외곽선
-    # font "arial.ttf"  # 폰트 (선택 사항)
+screen ending_button():
+    vbox:
+        align (0.5, 0.5) # 화면 중앙에 위치
+        spacing 100 # 버튼 사이 간격
 
+        # "다시보기" 이미지 버튼
+        imagebutton:
+            idle "images/again_btn.png"  # 기본 상태 이미지
+            hover "images/again_btn.png"  # 호버 상태 이미지
+            action [Jump("juyuk_jump_bricks"), Function(btn_clicked_function)]
+
+        # "About" 이미지 버튼
+        imagebutton:
+            idle "images/about_btn.png"  # 기본 상태 이미지
+            hover "images/about_btn.png"  # 호버 상태 이미지
+            action [Jump("about_app"), Function(btn_clicked_function)]
+
+        # "후원하기" 이미지 버튼
+        imagebutton:
+            idle "images/share_btn.png"  # 기본 상태 이미지
+            hover "images/share_btn.png"  # 호버 상태 이미지
+            action [Jump("share_app"), Function(btn_clicked_function)]
+
+        # "게임 종료" 이미지 버튼
+        imagebutton:
+            idle "images/quit_btn.png"  # 기본 상태 이미지
+            hover "images/quit_btn.png"  # 호버 상태 이미지
+            # $ game_quit = True
+            action Quit(confirm=False)  # 게임 종료
 
 
 # 여기에서부터 게임이 시작합니다.
@@ -193,11 +214,11 @@ label start:
     # play music "audio/relaxing-piano-music-275681.mp3" fadein 1.5 loop
 
     show coin1:
-        # alpha 0.0  # 초기 투명도 (완전 투명)
+        alpha 0.0  # 초기 투명도 (완전 투명)
         xpos 0.20
         ypos 0.1
         zoom 2.2
-        # linear 1.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)    
+        linear 4.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)    
 
     call juyuk_description 
 
@@ -205,31 +226,19 @@ label start:
 
     call assemble_ramdom_bricks
 
-    # hide coin_gif_animation
-
-    $ imageFileName = genImageFile.gen_image_file_name(itemString)
-    # hide imActorTap
-    image imActorTap:
-        imageFileName
-        zoom 2.0
-
-    # show imActorTap at left with moveinright
-
     show coin0:
-        # alpha 0.0  # 초기 투명도 (완전 투명)
+        alpha 0.0  # 초기 투명도 (완전 투명)
         xpos 0.20
         ypos 0.1
         zoom 2.2
-        # linear 1.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명) 
+        linear 4.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명) 
     
-    show text "{size=60}{color=#000000}{b}풀이를 살펴봅시다!{/b}{/color}{/size}" with irisout
+    show text "{size=70}{color=#000000}{b}풀이를 살펴봅시다!{/b}{/color}{/size}" with irisout
 
     $ renpy.pause(2.0)
     hide text with dissolve
 
     hide coin0
-    
-    # show text "[imageFileName]"
 
     with Pause(1)
 
@@ -239,7 +248,6 @@ label start:
 
     call juyuk_ending from _call_juyuk_ending
 
-    # hide imActorTap
 
     with Pause(1)
  
@@ -384,16 +392,16 @@ label juyuk_jump_bricks:
 
 label juyuk_description:
     with Pause(1)
-    show text "{size=60}우주의 원리를 설명하는 주역 64괘로{/size}" with irisout
+    show text "{size=70}우주의 원리로 설명하는 주역 64괘로{/size}" with irisout
     with Pause(2)
     hide text with dissolve
-    show text "{size=60}혼란스런 상황이 어떻게 흘러 갈지 조금만 앞서 볼까요?{/size}" with irisout
+    show text "{size=70}상황이 어떻게 나아갈지 알아볼까요?{/size}" with irisout
     with Pause(2)
     hide text with dissolve    
-    show text "{size=60}{b}올바른 운세를 구하려면{/b}, 호흡과 주위를 정리하고,{/size}" with irisout
+    show text "{size=70}{b}올바른 운세(運勢)를 구하려면{/b}, 호흡과 주변을 정리하고,{/size}" with irisout
     with Pause(2)
     hide text with dissolve
-    show text "{size=60}{b}마음을 한곳으로 모은후에{/b} 진행해 주세요!{/size}" with irisout
+    show text "{size=70}{b}마음을 차분히 하시고{/b} 진행해 주세요!{/size}" with irisout
     with Pause(2)
     hide text with dissolve
     return
@@ -402,36 +410,35 @@ label juyuk_ending:
     nvl clear
     scene bgBegin with moveinbottom
 
-    while game_quit == False:
-        menu:
-            # "저장하기":
-            #     with Pause(1)
-            #     show text "구현중"
-            #     with Pause(2)
-            #     hide text with dissolve
-            "다시보기":
-                # $ admob_html_file = "admob_ad_sample.html"
-                # $ webbrowser.open("file://" + renpy.loader.transfn(admob_html_file))
+    call screen ending_button
 
-                scene bgMain with fade
-                call juyuk_jump_bricks from _call_juyuk_jump_bricks_1
-            "About...":
-                call about_app from _call_about_app    
-            "후원하기":
-                call share_app from _call_share_app
-            "다시하기":
-                $ renpy.full_restart()         
-            "나가기":
-                $ game_quit = True
-                # stop music fadeout 1.5
-                $ renpy.quit()
+    # while game_quit == False:
+    #     menu:
+    #         # "저장하기":
+    #         #     with Pause(1)
+    #         #     show text "구현중"
+    #         #     with Pause(2)
+    #         #     hide text with dissolve
+    #         "다시보기":
+    #             # $ admob_html_file = "admob_ad_sample.html"
+    #             # $ webbrowser.open("file://" + renpy.loader.transfn(admob_html_file))
+
+    #             scene bgMain with fade
+    #             call juyuk_jump_bricks from _call_juyuk_jump_bricks_1
+    #         "About...":
+    #             call about_app from _call_about_app    
+    #         "후원하기":
+    #             call share_app from _call_share_app
+    #         "다시하기":
+    #             $ renpy.full_restart()         
+    #         "나가기":
+    #             $ game_quit = True
+    #             $ renpy.quit()
 
     scene bgBegin with dissolve
     return
 
 label share_app:
-
-    # $ copy_to_clipboard("http://www.oarchi.co.kr")
 
     menu:
         "광고":
@@ -446,18 +453,18 @@ label about_app:
 
     default gMessageAbout = """
 
-            {size=75}{b}더운세(運勢)는{/b}{/size}
+    {size=85}{b}더운세(運勢)는{/b}{/size}
 
-            {size=60}주역의 괘로 어떻게 나아가야 할지 알아봅니다.
+    {size=70}선인들의 지혜로 상황을 비추어봅니다.
 
-            오랜 지혜에서 시간을 거스러는 통찰을 경험하시길 바랍니다.
+    오랜 지혜에서 긴 세월을 관통하는 통찰을 경험하시길 바랍니다.
 
-            주역 괘는 여러번 질문하기 보다는,
+    한꺼번에 여러 질문을 하기 보다는,
 
-            알고자 하는 질문을 정하고,
+    알고자 하는 질문을 정하고,
 
-            마음을 편안히 한 후에 진행하시길 권합니다.{/size}
-        """
+    마음을 편안히 한 후에 진행하시길 권합니다.{/size}
+    """
     show text "[gMessageAbout]" with moveinbottom
     $ renpy.pause()
     hide text dissolve
@@ -476,52 +483,48 @@ label logic_tester:
 
 label assemble_ramdom_bricks:
     $ explainMessage = [
-        '상황을 차분히 바라보는 시선을 가지는 것이 필요합니다.',
+        '상황을 차분히 바라보는 시선이 필요 할수도 있습니다.',
         '분위기에 연연하지 않아도 괜찮아요',
-        '상황에 압도 당하지 않는 굳건함이 필요해요.',
-        '한쪽으로 치우치지 않는 균형감각도 필요하죠.',
-        '현실과 상상을 분별하는 관점도 중요하구요.',
-        '지혜는 오래되어서 나오는 것은 아니예요',
-        '삶이 평탄한것이 잘 사는것은 아닐것 같아요',
+        '상황에 당당히 맞서는 굳건함도 가끔 필요해요.',
+        '한쪽으로만 치우치지 않는 균형감각도 필요하죠.',
+        '현실과 상상을 분별하는 관점이 중요해요.',
+        '지혜는 꼭 오래되어서 나오는 것은 아니예요',
+        '삶이 평탄하다면 잘 살고 있는것일까요',
         '앞으로 나아가는것은 마음먹기 부터 시작하는게 분명해요.',
         '하늘을 올려다 보세요. 끝간데 없이 위에 있어요',
         '아래도 내려다 보세요. 굳건한 땅의 지지가 있어요',
         '너무 심각하지 않게, 자세는 가능한 편안하게, 천천히 호흡에 집중해 보세요',
-        '지금이 적당한 때가 아닐수 있고, 그렇다면 모쪼록 지나가는것도 좋아요.',
-        '혹시나 이 길이 지금은 막혀있는 길이라면 돌아 가야 할수 있어요.',
+        '지금이 적당한 때가 아닐 수 있고, 그렇다면 지나쳐 가는것도 좋아요.',
+        '혹시나 이 길이 막혀있는 길이라면 돌아 가야 할수 있어요.',
         '시선은 허공 멀리에 두고 귀는 내 심장 박동에 기울여 보세요.',
         '내용에 휘둘리지 말고, 지혜를 구하는 마음으로 보시기 바랍니다.'
-        ]
+    ]
     $ itemCount = 0
     $ itemString = ""
 
-    show text "{size=60}{color=#330994}먼저, 괘를 찾아봅시다!{/color}{/size}" with irisout
+    show text "{size=70}{color=#330994}괘를 구해볼께요!{/color}{/size}" with irisout
     with Pause(0.8)
     hide text
-    # show text "천천히 화면을 터치해 주세요!" with moveinleft
-    # with Pause(0.8)
-    # hide text
-    nvl clear
 
     $ g_xpos = 0.4
     $ g_ypos = 0.6
-    $ g_zoom = 2
-    $ g_gueGap = 0.022
+    $ g_zoom = 1.5
+    $ g_gueGap = 0.025
 
     # 괘를 조합하기 전에 소개 문장
     $ randomChoice = renpy.random.choice(explainMessage)
-    show text "{cps=10}[randomChoice]{/cps}" with  irisout
+    show text "{cps=10}{size=70}[randomChoice]{/size}{/cps}" with  irisout
     # $ renpy.pause()
-    with Pause(1.0)
+    with Pause(1.5)
     hide text
 
     # 돌아가는 이미지를 표시합니다.
     show coin_gif_animation:
-        # alpha 0.0  # 초기 투명도 (완전 투명)
+        alpha 0.2  # 초기 투명도 (완전 투명)
         xpos 0.20
         ypos 0.1
         zoom 2.2
-        # linear 1.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        linear 1.5 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
 
     # 괘는 한번에 조합한다.
     while itemCount < 6:
@@ -530,6 +533,7 @@ label assemble_ramdom_bricks:
         $ randomValue = renpy.random.randint(0,999)%2+1
         $ itemString += str(randomValue)
         $ itemCount += 1
+        with Pause(0.5)
 
     $ itemCount = 0
     while itemCount < 6:
@@ -640,8 +644,9 @@ label assemble_ramdom_bricks:
         zoom 2.2
         linear 5.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
 
-    show text "{size=70}{color=#330994}괘를 구했습니다.{/color}{/size}" with irisout
-    $ renpy.pause()     
+    show text "{size=70}{color=#330994}괘를 찾았어요.{/color}{/size}" with irisout
+    # $ renpy.pause()     
+    with Pause(1.0)
     hide text with dissolve
 
     hide coin5
@@ -676,26 +681,20 @@ transform slow_fade_out:
 
 label display_bricks_message_v3(messages):
     show text "[messages]" 
+
+    show ctc_click_img:
+        alpha 0.0
+        xpos 0.8
+        ypos 0.8
+        linear 3.0 alpha 1.0
+
     $ renpy.pause()
     hide text dissolve
     show text "[messages]" at slow_fade_out
     with Pause(2.0)
     hide text dissolve
 
-    # 문자열을 바람에 날리듯이 사라지게 해보자.
-    # $ lines = messages.strip().split("\n")
-
-    # $ start_x = 400  # 시작 X 위치
-    # $ start_y = 300  # 시작 Y 위치
-    # $ y_offset = 0  # Y 위치 오프셋
-
-    # for j, sentence in enumerate(lines):
-    #     # 각 문장의 글자를 순회
-    #     for i, char in enumerate(sentence):
-    #         $ char_x = start_x + i * 30
-    #         show text(char, size=50) at move_char(char, char_x, start_y + y_offset)
-    #         pause renpy.random.uniform(0.05, 0.2)  # 각 글자마다 약간의 딜레이 추가
-    #     $ y_offset += 50  # 다음 문장의 Y 위치 오프셋 증가
+    hide ctc_click_img
 
     return
 
@@ -732,19 +731,8 @@ label g_1111110:
     자신의 능력을 믿고 최선을 다하세요.
     균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""
 
-    # $ wrapped_text = wrap_text(gMessage, width=40)  # 40자마다 줄바꿈
-    # show text "[wrapped_text]"
-    # show text "[gMessage]" with moveinbottom
-    # $ renpy.pause()
-    # hide text dissolve
     call display_bricks_message_v3(gMessage) from _call_display_bricks_message_v3
     
-    # $ lines = gMessage.strip().split("\n")
-
-    # for aline in lines:
-    #     # e "[aline]"
-    #     act_Narator "[aline]"
-
     return
 
 
@@ -779,13 +767,6 @@ label g_111111:
     자신의 능력을 믿고 최선을 다하세요.
     균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""
 
-    # act_Narator "[g_111111_messages]"
-    # $ lines = g_111111_messages.strip().split("\n")
-    # call display_bricks_message(act_Narator,lines, 8)
-    # # # call display_bricks_message(act_Narator,g_111111_messages, 8)
-    # show text "[g_111111_messages]" with moveinbottom
-    # $ renpy.pause()
-    # hide text dissolve
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_1
     
     return
@@ -794,7 +775,7 @@ label g_111111:
 
 label g_222222:
     $ g_exp_messages = """
-        {size=75}{b}곤위지 (坤爲地){/b}{/size}
+        {size=75}{b}곤위지(坤爲地){/b}{/size}
 
         {size=60}위의 괘는 땅(地)이고 아래 괘도 땅(地)이다.
         모두 땅을 상징하는 곤괘(坤卦)로 구성되어 있어 지(地)라고 하였다.

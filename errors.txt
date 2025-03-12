@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 422: expected statement.
-    action Quit(confirm=False)  
-               ^
+File "game/script.rpy", line 194: expected a keyword argument or child statement.
+    $ game_quit = True
+    ^
 
 Ren'Py Version: Ren'Py 8.3.6.25022803
-Tue Mar 11 22:29:31 2025
+Wed Mar 12 23:47:11 2025

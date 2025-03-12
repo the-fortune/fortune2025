@@ -428,12 +428,12 @@ init python:
     def small():
 
         ## 글자 크기들.
-        gui.text_size = 45
+        gui.text_size = 65
         gui.name_text_size = 54
         gui.notify_text_size = 38
         gui.interface_text_size = 45
         gui.button_text_size = 45
-        gui.label_text_size = 51
+        gui.label_text_size = 65
 
         ## 텍스트박스의 위치를 조정합니다.
         gui.textbox_height = 360

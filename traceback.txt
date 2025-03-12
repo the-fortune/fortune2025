@@ -1,34 +1,78 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 196, in script call
+  File "game/script.rpy", line 245, in script call
     call juyuk_ending from _call_juyuk_ending
-  File "game/script.rpy", line 437, in script call
-    call share_app from _call_share_app
-  File "game/script.rpy", line 451, in script
-    $ renpy.android.open_url("file:///admob_ad_sample.html")
-  File "game/script.rpy", line 451, in <module>
-    $ renpy.android.open_url("file:///admob_ad_sample.html")
-AttributeError: 'bool' object has no attribute 'open_url'
+  File "game/script.rpy", line 409, in script
+    call screen ending_button
+  File "renpy/common/000statements.rpy", line 671, in execute_call_screen
+    store._return = renpy.call_screen(name, *args, **kwargs)
+  File "game/script.rpy", line 167, in execute
+    screen ending_button():
+  File "game/script.rpy", line 167, in execute
+    screen ending_button():
+  File "game/script.rpy", line 168, in execute
+    vbox:
+  File "game/script.rpy", line 173, in execute
+    imagebutton:
+  File "game/script.rpy", line 173, in keywords
+    imagebutton:
+  File "game/script.rpy", line 176, in <module>
+    action _call_juyuk_jump_bricks
+NameError: name '_call_juyuk_jump_bricks' is not defined
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 196, in script call
+  File "game/script.rpy", line 245, in script call
     call juyuk_ending from _call_juyuk_ending
-  File "game/script.rpy", line 437, in script call
-    call share_app from _call_share_app
-  File "game/script.rpy", line 451, in script
-    $ renpy.android.open_url("file:///admob_ad_sample.html")
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 834, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1184, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/script.rpy", line 451, in <module>
-    $ renpy.android.open_url("file:///admob_ad_sample.html")
-AttributeError: 'bool' object has no attribute 'open_url'
+  File "game/script.rpy", line 409, in script
+    call screen ending_button
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 1987, in execute
+    self.call("execute")
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 1966, in call
+    return renpy.statements.call(method, parsed, *args, **kwargs)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\statements.py", line 374, in call
+    return method(parsed, *args, **kwargs)
+  File "renpy/common/000statements.rpy", line 671, in execute_call_screen
+    store._return = renpy.call_screen(name, *args, **kwargs)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\exports\statementexports.py", line 345, in call_screen
+    rv = renpy.ui.interact(mouse="screen", type="screen", roll_forward=roll_forward)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ui.py", line 301, in interact
+    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\core.py", line 2218, in interact
+    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, pause_modal=pause_modal, **kwargs) # type: ignore
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\core.py", line 2748, in interact_core
+    root_widget.visit_all(lambda d : d.per_interact())
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\screen.py", line 480, in visit_all
+    callback(self)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\core.py", line 2748, in <lambda>
+    root_widget.visit_all(lambda d : d.per_interact())
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\screen.py", line 491, in per_interact
+    self.update()
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\screen.py", line 700, in update
+    self.screen.function(**self.scope)
+  File "game/script.rpy", line 167, in execute
+    screen ending_button():
+  File "game/script.rpy", line 167, in execute
+    screen ending_button():
+  File "game/script.rpy", line 168, in execute
+    vbox:
+  File "game/script.rpy", line 173, in execute
+    imagebutton:
+  File "game/script.rpy", line 173, in keywords
+    imagebutton:
+  File "game/script.rpy", line 176, in <module>
+    action _call_juyuk_jump_bricks
+NameError: name '_call_juyuk_jump_bricks' is not defined
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.3.6.25022803
 circle64love 1.0
-Tue Mar 11 20:24:45 2025
+Thu Mar 13 00:16:38 2025

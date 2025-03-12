@@ -1,33 +1,32 @@
-2025-03-11 14:40:02 UTC
+2025-03-12 15:37:40 UTC
 Windows-10-10.0.19045
 Ren'Py 8.3.6.25022803
 
-Early init took 0.35s
-Loading error handling took 0.74s
-Loading script took 8.07s
-Loading save slot metadata took 0.09s
+Early init took 0.21s
+Loading error handling took 0.49s
+Loading script took 4.18s
+Loading save slot metadata took 0.08s
 Loading persistent took 0.00s
- - Init at renpy/common/00library.rpy:456 took 0.25100 s.
-Running init code took 0.45s
+Running init code took 0.39s
 Loading analysis data took 0.00s
 Analyze and compile ATL took 0.03s
 Reloading save slot metadata took 0.07s
 Index archives took 0.00s
 Backing up script files to 'C:\\Users\\chapc\\AppData\\Roaming/RenPy/backups\\WoonMyung':
-Dump and make backups took 0.19s
+Dump and make backups took 0.14s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
-Initial gc took 0.11s
+Initial gc took 0.07s
 DPI scale factor: 1.000000
 nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
 Creating interface object took 0.01s
 Cleaning stores took 0.00s
-Init translation took 0.09s
+Init translation took 0.07s
 Build styles took 0.01s
 Load screen analysis took 0.00s
 Analyze screens took 0.08s
 Save screen analysis took 0.04s
 Prepare screens took 0.39s
-Save pyanalysis. took 0.03s
+Save pyanalysis. took 0.04s
 Save bytecode. took 0.06s

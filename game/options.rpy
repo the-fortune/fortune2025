@@ -165,7 +165,7 @@ define config.save_directory = "WoonMyung-1739794174"
 ## 작업 표시 줄 또는 독에 표시되는 아이콘.
 
 # define config.window_icon = "gui/window_icon.png"
-define config.window_icon = "gui/coffee_tea.png"
+define config.window_icon = "gui/window_icon.png"
 
 
 ## 빌드 구성 #######################################################################

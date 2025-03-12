@@ -259,7 +259,7 @@ screen quick_menu():
 ## 플레이어가 UI(스크린)을 일부러 숨기지 않는 한 퀵메뉴가 게임 내에 오버레이로
 ## 출력되게 합니다.
 init python:
-    config.overlay_screens.append("quick_menu")
+    # config.overlay_screens.append("quick_menu")
 
 # "타자기" 효과를 얻으려면 다음 코드를 사용할 수 있습니다.
 # https://www.renpy.org/wiki/renpy/doc/FAQ#How_do_I_get_a_sound_to_play_while_the_text_appears.2C_like_Phoenix_Wright.3F
@@ -302,59 +302,9 @@ screen navigation():
         imagebutton:
             idle "images/start_btn.png"  # 기본 상태 이미지
             hover "images/start_btn.png"  # 호버 상태 이미지
+            # idle "images/pixa_start.png"
+            # hover "images/pixa_start.png"
             action Start()  # 게임 시작
-
-        # # "게임 종료" 이미지 버튼
-        # imagebutton:
-        #     idle "images/quit_btn.png"  # 기본 상태 이미지
-        #     hover "images/quit_btn.png"  # 호버 상태 이미지
-        #     action Quit(confirm=False)  # 게임 종료  
-
-    # vbox:
-    #     style_prefix "navigation"
-
-    #     xpos gui.navigation_xpos
-    #     yalign 0.5
-
-    #     spacing gui.navigation_spacing
-
-    #     # textbutton _("시작하기") action Start()
-
-    #     # if main_menu:
-
-    #         # textbutton _("시작하기") action Start()
-
-    #     # else:
-
-    #     #     # textbutton _("대사록") action ShowMenu("history")
-
-    #     #     textbutton _("저장하기") action ShowMenu("save")
-
-    #     # textbutton _("불러오기") action ShowMenu("load")
-
-    #     # textbutton _("환경설정") action ShowMenu("preferences")
-
-    #     # if _in_replay:
-
-    #     #     textbutton _("리플레이 끝내기") action EndReplay(confirm=True)
-
-    #     # elif not main_menu:
-
-    #     #     textbutton _("메인 메뉴") action MainMenu()
-
-    #     # textbutton _("버전정보") action ShowMenu("about")
-
-    #     # if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
-
-    #     #     ## 도움말 메뉴는 모바일 디바이스와 맞지 않아 불필요합니다.
-    #     #     textbutton _("조작방법") action ShowMenu("help")
-
-    #     # textbutton _("종료하기") action Quit(confirm=not main_menu)
-    #     # if renpy.variant("pc"):
-
-    #     #     ## iOS에서는 종료 버튼이 금지되어 있으며 Android 및 웹에서는 불필요
-    #     #     ## 합니다.
-    #     #     textbutton _("종료하기") action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -583,11 +533,11 @@ screen about():
             label "[config.name!t]"
             text _("버전 [config.version!t]\n")
 
-            ## gui.about 의 내용은 보통 options.rpy에 있습니다.
-            if gui.about:
-                text "[gui.about!t]\n"
+            # ## gui.about 의 내용은 보통 options.rpy에 있습니다.
+            # if gui.about:
+            #     text "[gui.about!t]\n"
 
-            text _("{a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only] 으로 만들어진 게임.\n\n[renpy.license!t]")
+            # text _("{a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only] 으로 만들어진 게임.\n\n[renpy.license!t]")
 
 
 style about_label is gui_label
