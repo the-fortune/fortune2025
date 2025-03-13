@@ -295,8 +295,8 @@ screen navigation():
 
     add "images/MainMenu.jpg"
     vbox:
-        align (0.5, 0.7)  # 화면 중앙에 배치
-        spacing 100  # 버튼 사이 간격
+        align (0.5, 0.5)  # 화면 중앙에 배치
+        # spacing 100  # 버튼 사이 간격
 
         # "게임 시작" 이미지 버튼
         imagebutton:

@@ -11,7 +11,7 @@
 ##
 ## 문자열을 _()로 둘러 쌓으면 씌우면 번역의 대상으로 표시됩니다.
 
-define config.name = _("circle64love")
+define config.name = _("TheFortune64")
 
 # 추가한 옵션
 # define config.fullscreen = True
@@ -44,7 +44,7 @@ define config.version = "1.0"
 ## 하고 단락 사이에 빈 줄을 남겨 둡니다.
 
 define gui.about = _p("""
-더 운세은 오아키에서 제작하였습니다.
+더 운세(運勢)는 오아키에서 제작하였습니다.
 사용된 내용은 주역을 참고 하였습니다.
 """)
 
@@ -52,7 +52,7 @@ define gui.about = _p("""
 ## 배포판의 실행 파일과 디렉토리에 사용되는 게임의 약식 이름. 이것은 ASCII 전용
 ## 이어야 하며 공백, 콜론 또는 세미콜론을 포함해서는 안 됩니다.
 
-define build.name = "circle64love"
+define build.name = "TheFortune64"
 
 
 ## 음악과 음향 ######################################################################
