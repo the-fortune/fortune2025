@@ -2,25 +2,15 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 239: show statement expects a non-empty block.
-    show ctc_click_img:
-                       ^
+File "game/script.rpy", line 527: expected statement.
+    renpy.run("""from android import AndroidService
+    service = AndroidService("show_banner_ad")
+    service.start()""")
 
-File "game/script.rpy", line 240: expected statement.
-    alpha 0.0
-           ^
-
-File "game/script.rpy", line 241: expected statement.
-    xpos 0.8
-          ^
-
-File "game/script.rpy", line 242: expected statement.
-    ypos 0.8
-          ^
-
-File "game/script.rpy", line 243: expected statement.
-    linear 3.0 alpha 1.0
-            ^
+File "game/script.rpy", line 532: expected statement.
+    renpy.run("""from android import AndroidService
+    service = AndroidService("hide_banner_ad")
+    service.start()""")            
 
 Ren'Py Version: Ren'Py 8.3.6.25022803
-Thu Mar 13 23:09:34 2025
+Sat Mar 15 21:59:15 2025

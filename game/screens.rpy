@@ -292,10 +292,9 @@ style quick_button_text:
 ## 시작/종료할 수 있게 합니다.
 
 screen navigation():
-
-    add "images/MainMenu.jpg"
+    add "images/SceneStart.jpg"
     vbox:
-        align (0.5, 0.5)  # 화면 중앙에 배치
+        align (0.5, 0.7)  # 화면 중앙에 배치
         # spacing 100  # 버튼 사이 간격
 
         # "게임 시작" 이미지 버튼

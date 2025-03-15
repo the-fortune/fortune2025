@@ -79,7 +79,6 @@ define config.has_voice = True
 # define config.main_menu_music = "main-menu-theme.ogg"
 define config.main_menu = False
 
-
 ## 번역 ##########################################################################
 ##
 ## 이러한 변수는 특정 이벤트가 발생할 때 사용되는 전환을 설정합니다. 각 변수는
@@ -197,6 +196,8 @@ init python:
     build.classify('**/.**', None)
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
+    build.classify('**.psd', None)  # PSD 파일 제외
+    build.classify('**.txt', None)  # 텍스트 파일 제외
 
     ## 파일을 아카이브하려면 'archive'로 분류하십시오.
 
@@ -208,6 +209,11 @@ init python:
 
     build.documentation('*.html')
     build.documentation('*.txt')
+
+    # options.rpy 파일에서 설정
+    build.archive("scripts", "all")
+    build.archive("images", "all")
+    build.archive("audio", "all")    
 
 
 ## 인앱 구매를 수행하려면 Google Play 라이선스 키가 필요합니다. Google Play 개발

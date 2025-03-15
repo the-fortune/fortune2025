@@ -1,40 +1,34 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "renpy/common/00start.rpy", line 241, in script call
-    call _splashscreen from _call_splashscreen_1
-  File "game/script.rpy", line 124, in script
-    show text "{size=+60}{b}더{color=#000000}運勢{/color}(운세){/b}{/size}
-SyntaxError: EOL while scanning string literal (<none>, line 1)
+  File "game/script.rpy", line 267, in script call
+    call screen imagemap_main
+  File "game/script.rpy", line 342, in script call
+    call juyuk_jump_bricks(1) from _call_juyuk_jump_bricks
+  File "game/script.rpy", line 412, in script call
+    call g_121121(g_option) from _call_g_121121
+  File "game/script.rpy", line 1482, in script
+    label g_121121:
+Exception: Arguments supplied, but parameter list not present
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "renpy/common/00start.rpy", line 241, in script call
-    call _splashscreen from _call_splashscreen_1
-  File "game/script.rpy", line 124, in script
-    show text "{size=+60}{b}더{color=#000000}運勢{/color}(운세){/b}{/size}
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 1124, in execute
-    show_imspec(self.imspec, atl=getattr(self, "atl", None))
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 1087, in show_imspec
-    renpy.config.show(name,
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\exports\displayexports.py", line 477, in show
-    if not base.find_target() and renpy.config.missing_show:
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\display\image.py", line 421, in find_target
-    self.target = target._duplicate(a)
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\text\extras.py", line 266, in _duplicate
-    string = renpy.python.py_eval(param)
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1213, in py_eval
-    code = py_compile(code, 'eval')
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1150, in py_compile
-    raise e
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1087, in py_compile
-    raise orig_e
-  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\python.py", line 1079, in py_compile
-    tree = compile(source, filename, py_mode, ast.PyCF_ONLY_AST | flags, 1)
-SyntaxError: EOL while scanning string literal (<none>, line 1)
+  File "game/script.rpy", line 267, in script call
+    call screen imagemap_main
+  File "game/script.rpy", line 342, in script call
+    call juyuk_jump_bricks(1) from _call_juyuk_jump_bricks
+  File "game/script.rpy", line 412, in script call
+    call g_121121(g_option) from _call_g_121121
+  File "game/script.rpy", line 1482, in script
+    label g_121121:
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\ast.py", line 777, in execute
+    values = apply_arguments(self.parameters, renpy.store._args, renpy.store._kwargs)
+  File "D:\Projects\renpy\renpy-8.3.6-sdk\renpy\parameter.py", line 451, in apply_arguments
+    raise Exception("Arguments supplied, but parameter list not present")
+Exception: Arguments supplied, but parameter list not present
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.3.6.25022803
 TheFortune64 1.0
-Thu Mar 13 22:53:41 2025
+Sat Mar 15 21:15:44 2025

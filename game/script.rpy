@@ -27,6 +27,17 @@ init python:
         wrapped_text = textwrap.fill(text, width=width)
         return wrapped_text
 
+    def show_banner_ad():
+        if renpy.android:
+            renpy.run("""from android import AndroidService
+service = AndroidService("show_banner_ad")
+service.start()""")
+
+    def hide_banner_ad():
+        if renpy.android:
+            renpy.run("""from android import AndroidService
+service = AndroidService("hide_banner_ad")
+service.start()""")
 
 # 게임에서 사용할 캐릭터를 정의합니다.
 
@@ -96,14 +107,54 @@ image coin_gif_animation:
     0.15
     repeat
 
+# 텍스트 효과
+transform blink_0_1:
+    alpha 1.0 # 완전히 보임
+    linear 1.0 alpha 0.0 # 서서히 사라짐
+    linear 0.0 alpha 1.0 # 서서히 나타남
+    repeat # 반복
 
-# image imActorMain:
-#     "images/nemo.jpg"
-#     zoom 0.1
+transform slow_fade_in:
+    alpha 0.0 # 초기 투명도
+    linear 5.0 alpha 1.0
 
-# image imActorSub:
-#     "images/kabiur-rahman-riyad.jpg"
-#     zoom 0.05
+transform shake_fade_out:
+    # linear 0.1 xoffset 10  # 오른쪽으로 이동
+    # linear 0.1 xoffset -10  # 왼쪽으로 이동
+    # repeat 3  # 5번 반복
+    alpha 1.0  # 초기 투명도
+    linear 5.0 alpha 0.0  # 3초 동안 투명도를 0으로 변경    
+
+transform slow_fade_out:
+    alpha 1.0  # 초기 투명도
+    linear 10.0 alpha 0.0  # 10초 동안 투명도를 0으로 변경
+
+transform shake_effect:
+    linear 0.1 xoffset 10  # 오른쪽으로 이동
+    linear 0.1 xoffset -10  # 왼쪽으로 이동
+    repeat 5  # 5번 반복
+
+transform rotate_effect_360:
+    rotate 0  # 초기 각도
+    zoom 1.0
+    linear 1.0 zoom 1.5
+    linear 10.0 rotate 360  # 360도 회전
+    repeat
+
+transform rotate_effect:
+    alpha 1.0  # 초기 투명도 (완전 투명)
+    rotate 0  # 초기 각도
+    zoom 1.0
+    linear 1.0 zoom 2.0
+    linear 10.0 rotate 720  # 360도 회전
+    linear 1.0 alpha 0.0
+    repeat
+
+transform move_center_effect:
+    xalign 0.5 yalign 0.5  # 화면 중앙
+    linear 1.0 xalign 0.8 yalign 0.2  # 오른쪽 상단으로 이동
+    linear 1.0 xalign 0.2 yalign 0.8  # 왼쪽 하단으로 이동
+    linear 1.0 xalign 0.5 yalign 0.5  # 중앙으로 복귀
 
 image imgClickIt:
     "images/hand-click.png"
@@ -121,13 +172,15 @@ label splashscreen:
     with Pause(1)
     show splash with dissolve
     with Pause(1)
-    show text "{size=75}{b}더{color=#000000}運勢{/color}(운세){/b}{/size}\n\n{size=60}{color=#000000}옛 사람들의 지혜를 나누는\n\n{b}운세(運勢)풀이{/b}.{/color}{/size}" at rotate_effect_360
+    show text "{size=75}{b}더{color=#000000}運勢{/color}(운세){/b}{/size}\n\n{size=60}{color=#000000}옛 사람들의 지혜를 나누는\n\n{b}운세(運勢)풀이{/b}.{/color}{/size}" at blink_0_1
     with Pause(3)
     hide text with dissolve
     # scene bgDualCircle with dissolve
     # stop music fadeout 1.0
     with Pause(1)
     return
+
+
 
 ################################################################################
 ## 시작 버튼은 script.rpy에서 구현.
@@ -152,7 +205,23 @@ screen my_start_button():
         imagebutton:
             idle "images/quit_btn.png"  # 기본 상태 이미지
             hover "images/quit_btn.png"  # 호버 상태 이미지
-            action Quit(confirm=False)  # 게임 종료  
+            action Quit(confirm=False)  # 게임 종료 
+
+screen imagemap_main():
+    imagemap:
+        ground "images/MainMenu.jpg"
+        hover "images/MainMenu.jpg"
+
+        #image map의 영역 정의
+        hotspot(200,1300, 550,1450) action Call('juyuk_origin') 
+        hotspot(800,1300, 1200,1450) action Call('juyuk_love') 
+
+        hotspot(200,1700, 550,1850) action Call('juyuk_business') 
+        hotspot(800,1700, 1200,1850) action Call('juyuk_stock') 
+
+        hotspot(200,1950, 550,2100) action Call('juyuk_today') 
+        hotspot(800,1950, 1200,2100) action Call('app_ending') 
+
 
 init python:
     def btn_clicked_function():
@@ -202,14 +271,57 @@ screen ending_button():
 # 여기에서부터 게임이 시작합니다.
 label start:
 
-    $ style.say_dialogue.xsize = None # 너비 제한 없음.
-
     $ itemString = ""
     $ game_quit = False
 
-    # show scene my_start_button
-    # pause
+    #주역점을 한번만 보도록 한다. 두번째는 메시지를 출력한다.
+    $ game_1 = 0
+    $ game_2 = 0
+    $ game_3 = 0
+    $ game_4 = 0
+    $ game_5 = 0
 
+    while game_quit == False:
+        call screen imagemap_main
+ 
+    return
+
+label juyuk_love:
+    call generater_juyuk_gae(0.2)
+    $ itemString = "111111"
+    scene bgMain with fade
+    call juyuk_jump_bricks(2)
+
+    # call juyuk_origin
+    return
+
+label juyuk_business:
+    call generater_juyuk_gae(0.3)
+    $ itemString = "111111"
+    scene bgMain with fade
+    call juyuk_jump_bricks(3)
+    return
+
+label juyuk_stock:
+    call generater_juyuk_gae(0.4)
+    $ itemString = "111111"
+    scene bgMain with fade
+    call juyuk_jump_bricks(4)
+    return
+
+label juyuk_today:
+    call generater_juyuk_gae(0.1)
+    $ itemString = "111111"
+    scene bgMain with fade
+    call juyuk_jump_bricks(5)
+    return
+
+label app_ending:
+    $ game_quit = True
+    $ renpy.quit()
+    return
+
+label juyuk_origin:
     scene bgBegin 
 
     # play music "audio/relaxing-piano-music-275681.mp3" fadein 1.5 loop
@@ -252,146 +364,145 @@ label start:
 
     scene bgMain with fade
 
-    call juyuk_jump_bricks from _call_juyuk_jump_bricks
+    call juyuk_jump_bricks(1) from _call_juyuk_jump_bricks
 
     call juyuk_ending from _call_juyuk_ending
 
-    with Pause(1)
- 
+    with Pause(1)    
     return
 
-label juyuk_jump_bricks:
+label juyuk_jump_bricks(g_option=1):
 
     if itemString == "1111110": #테스트용 샘플
-        call g_1111110 from _call_g_1111110
+        call g_1111110(g_option) from _call_g_1111110
     elif itemString == "111111": #중천건
-        call g_111111 from _call_g_111111
+        call g_111111(g_option) from _call_g_111111
     elif itemString == "222222": #중지곤
-        call g_222222 from _call_g_222222
+        call g_222222(g_option) from _call_g_222222
     elif itemString == "212221": #수뢰둔
-        call g_212221 from _call_g_212221
+        call g_212221(g_option) from _call_g_212221
     elif itemString == "122212": #산수목
-        call g_122212 from _call_g_122212
+        call g_122212(g_option) from _call_g_122212
     elif itemString == "212111": #수천수
-        call g_212111 from _call_g_212111
+        call g_212111(g_option) from _call_g_212111
     elif itemString == "111212": #천수송
-        call g_111212 from _call_g_111212
+        call g_111212(g_option) from _call_g_111212
     elif itemString == "222212": #지수사
-        call g_222212 from _call_g_222212
+        call g_222212(g_option) from _call_g_222212
     elif itemString == "212222": #수지비
-        call g_212222 from _call_g_212222
+        call g_212222(g_option) from _call_g_212222
     elif itemString == "112111": #풍천소축
-        call g_112111 from _call_g_112111
+        call g_112111(g_option) from _call_g_112111
     elif itemString == "111211": #천택리
-        call g_111211 from _call_g_111211
+        call g_111211(g_option) from _call_g_111211
     elif itemString == "222111": #지천태
-        call g_222111 from _call_g_222111
+        call g_222111(g_option) from _call_g_222111
     elif itemString == "111222": #천지비
-        call g_111222 from _call_g_111222
+        call g_111222(g_option) from _call_g_111222
     elif itemString == "111121": #천화동인 
-        call g_111121 from _call_g_111121
+        call g_111121(g_option) from _call_g_111121
     elif itemString == "121111": #화천대유
-        call g_121111 from _call_g_121111
+        call g_121111(g_option) from _call_g_121111
     elif itemString == "222122": #지산겸
-        call g_222122 from _call_g_222122
+        call g_222122(g_option) from _call_g_222122
     elif itemString == "221222": #뇌지예
-        call g_221222 from _call_g_221222
+        call g_221222(g_option) from _call_g_221222
     elif itemString == "211221": #택뢰수
-        call g_211221 from _call_g_211221
+        call g_211221(g_option) from _call_g_211221
     elif itemString == "122112": #산풍고
-        call g_122112 from _call_g_122112
+        call g_122112(g_option) from _call_g_122112
     elif itemString == "222211": #지택림
-        call g_222211 from _call_g_222211
+        call g_222211(g_option) from _call_g_222211
     elif itemString == "112222": #풍지관
-        call g_112222 from _call_g_112222
+        call g_112222(g_option) from _call_g_112222
     elif itemString == "121221": #화뢰서합
-        call g_121221 from _call_g_121221
+        call g_121221(g_option) from _call_g_121221
     elif itemString == "122121": #산화비
-        call g_122121 from _call_g_122121
+        call g_122121(g_option) from _call_g_122121
     elif itemString == "122222": #산지박
-        call g_122222 from _call_g_122222
+        call g_122222(g_option) from _call_g_122222
     elif itemString == "222221": #지뢰복
-        call g_222221 from _call_g_222221
+        call g_222221(g_option) from _call_g_222221
     elif itemString == "111221": #천뢰무망
-        call g_111221 from _call_g_111221
+        call g_111221(g_option) from _call_g_111221
     elif itemString == "122111": #산천대축
-        call g_122111 from _call_g_122111
+        call g_122111(g_option) from _call_g_122111
     elif itemString == "122221": #산뢰이
-        call g_122221 from _call_g_122221
+        call g_122221(g_option) from _call_g_122221
     elif itemString == "211112": #택풍대과
-        call g_211112 from _call_g_211112
+        call g_211112(g_option) from _call_g_211112
     elif itemString == "212212": #중수감
-        call g_212212 from _call_g_212212
+        call g_212212(g_option) from _call_g_212212
     elif itemString == "121121": #중화리
-        call g_121121 from _call_g_121121
+        call g_121121(g_option) from _call_g_121121
     elif itemString == "211122": #택산함
-        call g_211122 from _call_g_211122
+        call g_211122(g_option) from _call_g_211122
     elif itemString == "221112": #뇌풍항
-        call g_221112 from _call_g_221112
+        call g_221112(g_option) from _call_g_221112
     elif itemString == "111122": #천산돈
-        call g_111122 from _call_g_111122
+        call g_111122(g_option) from _call_g_111122
     elif itemString == "221111": #뇌천대장
-        call g_221111 from _call_g_221111
+        call g_221111(g_option) from _call_g_221111
     elif itemString == "121222": #화지진
-        call g_121222 from _call_g_121222
+        call g_121222(g_option) from _call_g_121222
     elif itemString == "222121": #지화명이
-        call g_222121 from _call_g_222121
+        call g_222121(g_option) from _call_g_222121
     elif itemString == "112121": #풍화가인
-        call g_112121 from _call_g_112121
+        call g_112121(g_option) from _call_g_112121
     elif itemString == "121211": #화택규
-        call g_121211 from _call_g_121211
+        call g_121211(g_option) from _call_g_121211
     elif itemString == "212122": #수산건
-        call g_212122 from _call_g_212122
+        call g_212122(g_option) from _call_g_212122
     elif itemString == "221212": #뇌수해
-        call g_212212 from _call_g_212212_1
+        call g_212212(g_option) from _call_g_212212_1
     elif itemString == "122211": #산택손
-        call g_122211 from _call_g_122211
+        call g_122211(g_option) from _call_g_122211
     elif itemString == "112221": #풍뢰익
-        call g_112221 from _call_g_112221
+        call g_112221(g_option) from _call_g_112221
     elif itemString == "211111": #택천쾌
-        call g_211111 from _call_g_211111
+        call g_211111(g_option) from _call_g_211111
     elif itemString == "111112": #천풍구
-        call g_111112 from _call_g_111112
+        call g_111112(g_option) from _call_g_111112
     elif itemString == "211222": #택지취
-        call g_211222 from _call_g_211222
+        call g_211222(g_option) from _call_g_211222
     elif itemString == "222112": #지풍승
-        call g_222112 from _call_g_222112
+        call g_222112(g_option) from _call_g_222112
     elif itemString == "211212": #택수곤
-        call g_211212 from _call_g_211212
+        call g_211212(g_option) from _call_g_211212
     elif itemString == "212112": #수풍정
-        call g_212112 from _call_g_212112
+        call g_212112(g_option) from _call_g_212112
     elif itemString == "211121": #택화혁
-        call g_211121 from _call_g_211121
+        call g_211121(g_option) from _call_g_211121
     elif itemString == "121112": #화풍정
-        call g_121112 from _call_g_121112
+        call g_121112(g_option) from _call_g_121112
     elif itemString == "221221": #중뢰진
-        call g_221221 from _call_g_221221
+        call g_221221(g_option) from _call_g_221221
     elif itemString == "122122": #중산간
-        call g_122122 from _call_g_122122
+        call g_122122(g_option) from _call_g_122122
     elif itemString == "112122": #풍산점
-        call g_112122 from _call_g_112122
+        call g_112122(g_option) from _call_g_112122
     elif itemString == "221211": #뇌택귀매
-        call g_221211 from _call_g_221211
+        call g_221211(g_option) from _call_g_221211
     elif itemString == "221121": #뇌화풍
-        call g_221121 from _call_g_221121
+        call g_221121(g_option) from _call_g_221121
     elif itemString == "121122": #화산려
-        call g_121122 from _call_g_121122
+        call g_121122(g_option) from _call_g_121122
     elif itemString == "112112": #중풍손
-        call g_112112 from _call_g_112112
+        call g_112112(g_option) from _call_g_112112
     elif itemString == "211211": #중택태
-        call g_211211 from _call_g_211211
+        call g_211211(g_option) from _call_g_211211
     elif itemString == "112212": #풍수환
-        call g_112212 from _call_g_112212
+        call g_112212(g_option) from _call_g_112212
     elif itemString == "212211": #수택절
-        call g_212211 from _call_g_212211
+        call g_212211(g_option) from _call_g_212211
     elif itemString == "112211": #풍택중부
-        call g_112211 from _call_g_112211
+        call g_112211(g_option) from _call_g_112211
     elif itemString == "221122": #뇌산소과
-        call g_221122 from _call_g_221122
+        call g_221122(g_option) from _call_g_221122
     elif itemString == "212121": #수화기제
-        call g_212121 from _call_g_212121
+        call g_212121(g_option) from _call_g_212121
     elif itemString == "121212": #화수미제
-        call g_121212 from _call_g_121212               
+        call g_121212(g_option) from _call_g_121212               
     else:
         call juyuk_ending from _call_juyuk_ending_1
 
@@ -415,7 +526,6 @@ label juyuk_description:
 
 label juyuk_ending:
     
-
     while game_quit == False:
 
         scene bgBegin
@@ -428,10 +538,12 @@ label juyuk_ending:
 label share_app:
 
     menu:
-        "광고":
+        "광고보기":
             # $ admob_html_file = "admob_ad_sample.html"
             # $ webbrowser.open("file://" + renpy.loader.transfn(admob_html_file))
-            pass
+            $ show_banner_ad()
+        "광고숨기기":
+            $ hide_banner_ad()           
         "취소":
             pass
     return
@@ -460,6 +572,128 @@ label about_app:
     
     return
 
+label generater_juyuk_gae(pause_value=0.5):
+    $ itemCount = 0
+    $ itemString = ""
+    # 괘는 한번에 조합한다.
+    while itemCount < 6:
+        # if itemCount % 3 == 0:
+        #     nvl clear
+        $ randomValue = renpy.random.randint(0,999)%2+1
+        $ itemString += str(randomValue)
+        $ itemCount += 1
+        with Pause(pause_value)
+
+    return
+
+label show_juyuk_gae(xvalue=0.4, yvalue=0.6, zoomvalue=1.5, gapvalue=0.025):
+
+    $ g1_xpos = xvalue
+    $ g1_ypos = yvalue
+    $ g1_zoom = zoomvalue
+    $ g1_gueGap = gapvalue
+        
+    $ itemCount = 0
+    while itemCount < 6:
+    # $ for char in itemString:
+        $ g1_ypos = g1_ypos + g1_gueGap
+        $ char = itemString[itemCount]
+        $ itemCount += 1
+        if itemCount == 1:
+            if char == "1":
+                show imageGau1_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau1_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        elif itemCount == 2:
+            if char == "1":
+                show imageGau2_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau2_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        elif itemCount == 3:
+            if char == "1":
+                show imageGau3_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau3_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        elif itemCount == 4:
+            if char == "1":
+                show imageGau4_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau4_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        elif itemCount == 5:
+            if char == "1":
+                show imageGau5_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau5_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        elif itemCount == 6:
+            if char == "1":
+                show imageGau6_1:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+            else:
+                show imageGau6_2:
+                    alpha 0.0  # 초기 투명도 (완전 투명)
+                    xpos g1_xpos
+                    ypos g1_ypos
+                    zoom g1_zoom
+                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
+        else:
+            show text "어 이럴리가 없어요"
+
+    $ renpy.pause(0.5)
+    return    
 
 label assemble_ramdom_bricks:
     $ explainMessage = [
@@ -479,17 +713,10 @@ label assemble_ramdom_bricks:
         '시선은 허공 멀리에 두고 귀는 내 심장 박동에 기울여 보세요.',
         '분위기에 휘둘리지 말고, 지혜를 구하는 마음으로 보시기 바랍니다.'
     ]
-    $ itemCount = 0
-    $ itemString = ""
 
     show text "{size=70}{color=#330994}그럼 괘를 구해봅시다!{/color}{/size}" with irisout
     with Pause(0.8)
     hide text
-
-    $ g_xpos = 0.4
-    $ g_ypos = 0.6
-    $ g_zoom = 1.5
-    $ g_gueGap = 0.025
 
     # 괘를 조합하기 전에 소개 문장
     $ randomChoice = renpy.random.choice(explainMessage)
@@ -507,113 +734,9 @@ label assemble_ramdom_bricks:
         linear 1.5 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
 
     # 괘는 한번에 조합한다.
-    while itemCount < 6:
-        # if itemCount % 3 == 0:
-        #     nvl clear
-        $ randomValue = renpy.random.randint(0,999)%2+1
-        $ itemString += str(randomValue)
-        $ itemCount += 1
-        with Pause(0.5)
+    call generater_juyuk_gae
 
-    $ itemCount = 0
-    while itemCount < 6:
-    # $ for char in itemString:
-        $ g_ypos = g_ypos + g_gueGap
-        $ char = itemString[itemCount]
-        $ itemCount += 1
-        if itemCount == 1:
-            if char == "1":
-                show imageGau1_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau1_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        elif itemCount == 2:
-            if char == "1":
-                show imageGau2_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau2_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        elif itemCount == 3:
-            if char == "1":
-                show imageGau3_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau3_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        elif itemCount == 4:
-            if char == "1":
-                show imageGau4_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau4_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        elif itemCount == 5:
-            if char == "1":
-                show imageGau5_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau5_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        elif itemCount == 6:
-            if char == "1":
-                show imageGau6_1:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-            else:
-                show imageGau6_2:
-                    alpha 0.0  # 초기 투명도 (완전 투명)
-                    xpos g_xpos
-                    ypos g_ypos
-                    zoom g_zoom
-                    linear 2.0 alpha 1.0  # 2초 동안 투명도를 1.0으로 변경 (완전 불투명)
-        else:
-            show text "어 이럴리가 없어요"
-        $ renpy.pause(0.7)
+    call show_juyuk_gae
 
     hide coin_gif_animation 
 
@@ -655,36 +778,9 @@ label display_bricks_message(actor, messages=[], speed=10):
 
     return
 
-transform slow_fade_out:
-    alpha 1.0  # 초기 투명도
-    linear 10.0 alpha 0.0  # 10초 동안 투명도를 0으로 변경
-
-transform shake_effect:
-    linear 0.1 xoffset 10  # 오른쪽으로 이동
-    linear 0.1 xoffset -10  # 왼쪽으로 이동
-    repeat 5  # 5번 반복
-
-transform rotate_effect_360:
-    rotate 0  # 초기 각도
-    zoom 1.0
-    linear 1.0 zoom 1.5
-    linear 10.0 rotate 360  # 360도 회전
-
-transform rotate_effect:
-    rotate 0  # 초기 각도
-    zoom 1.0
-    linear 1.0 zoom 2.0
-    linear 10.0 rotate 720  # 360도 회전
-
-transform move_center_effect:
-    xalign 0.5 yalign 0.5  # 화면 중앙
-    linear 1.0 xalign 0.8 yalign 0.2  # 오른쪽 상단으로 이동
-    linear 1.0 xalign 0.2 yalign 0.8  # 왼쪽 하단으로 이동
-    linear 1.0 xalign 0.5 yalign 0.5  # 중앙으로 복귀
-
 
 label display_bricks_message_v3(messages):
-    show text "[messages]" at shake_effect
+    show text "[messages]" at slow_fade_in
 
     show ctc_click_img:
         alpha 0.0
@@ -694,15 +790,14 @@ label display_bricks_message_v3(messages):
 
     $ renpy.pause()
     hide text fade
-    show text "[messages]" at rotate_effect
-    with Pause(2.0)
+    show text "[messages]" at shake_fade_out
+    with Pause(5.0)
     hide text dissolve
     hide ctc_click_img
 
     return
 
-
-label g_1111110:
+label g_1111110(g__option=1):
 
     $ gMessage = """
     {size=75}{b}중천건(重天乾){/b}{/size}                      
@@ -739,7 +834,7 @@ label g_1111110:
     return
 
 
-label g_111111:
+label g_111111(g__option=1):
     $ g_exp_messages = """
     {size=75}{b}중천건(重天乾){/b}{/size}                      
 
@@ -770,13 +865,59 @@ label g_111111:
     자신의 능력을 믿고 최선을 다하세요.
     균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""
 
-    call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_1
+    $ g2_exp_messages = """
+    {size=75}{b}중천건(重天乾){/b}{/size}                      
+
+    {size=60}순수한 양(陽)의 에너지를 나타냅니다.
+    끊임없이 나아가라는 메시지입니다.
+    새로운 시작, 창조, 그리고 무한한 가능성을 상징합니다.
+    변화를 받아들이고 적용하는 능력을 강조합니다.
+    잠재된 능력이 조금씩 나타나기 시작합니다.
+    큰 도약을 준비하는 시기입니다.
+    신중하게 행동하고 기회를 놓치지 마세요.
+    자신의 능력을 믿고 최선을 다하세요.
+    균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""    
+
+    $ g3_exp_messages = """
+    {size=75}{b}중천건(重天乾){/b}{/size}                      
+
+    {size=60}끊임없이 나아가라는 메시지입니다.
+    새로운 시작, 창조, 그리고 무한한 가능성을 상징합니다.
+    변화를 받아들이고 적용하는 능력을 강조합니다.
+    잠재된 능력이 조금씩 나타나기 시작합니다.
+    큰 도약을 준비하는 시기입니다.
+    신중하게 행동하고 기회를 놓치지 마세요.
+    자신의 능력을 믿고 최선을 다하세요.
+    균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""
+
+    $ g4_exp_messages = """
+    {size=75}{b}중천건(重天乾){/b}{/size}                      
+
+    {size=60}큰 도약을 준비하는 시기입니다.
+    신중하게 행동하고 기회를 놓치지 마세요.
+    자신의 능력을 믿고 최선을 다하세요.
+    균형을 유지하도록 주의하고, 겸손을 잃지 마세요.{/size}"""
+
+    $ g5_exp_messages = """
+    {size=75}{b}중천건(重天乾){/b}{/size}                      
+
+    {size=60}큰 도약을 준비하는 시기입니다.
+    신중하게 행동하고 기회를 놓치지 마세요.{/size}"""     
+
+    if g__option == 1: 
+        call display_bricks_message_v3(g_exp_messages) 
+    elif g__option == 2: 
+        call display_bricks_message_v3(g2_exp_messages) 
+    elif g__option == 3: 
+        call display_bricks_message_v3(g3_exp_messages) 
+    elif g__option == 4: 
+        call display_bricks_message_v3(g4_exp_messages) 
+    else:
+        call display_bricks_message_v3(g5_exp_messages)
     
     return
 
-
-
-label g_222222:
+label g_222222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}곤위지(坤爲地){/b}{/size}
 
@@ -805,7 +946,7 @@ label g_222222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_2
     return
 
-label g_212221:
+label g_212221(g__option=1):
 
     $ g_exp_messages = """
         {size=75}{b}수뇌둔(水雷屯){/b}{/size}
@@ -835,7 +976,7 @@ label g_212221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_3
     return
 
-label g_122212:
+label g_122212(g__option=1):
 
     $ g_exp_messages = """
         {size=75}{b}산수몽(山水蒙){/b}{/size}
@@ -858,7 +999,7 @@ label g_122212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_4
     return
 
-label g_212111:
+label g_212111(g__option=1):
 
     $ g_exp_messages = """
         {size=75}{b}수천수(水天需)
@@ -880,7 +1021,7 @@ label g_212111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_5
     return
 
-label g_111212:
+label g_111212(g__option=1):
 
     $ g_exp_messages = """
         {size=75}{b}천수송(天水訟){/b}{/size}
@@ -905,7 +1046,7 @@ label g_111212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_6
     return
 
-label g_222212:
+label g_222212(g__option=1):
 
     $ g_exp_messages = """
         {size=75}{b}지수사(地水師){/b}{/size}
@@ -933,7 +1074,7 @@ label g_222212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_7
     return
 
-label g_212222:
+label g_212222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}수지비(水地比){/b}{/size}
 
@@ -952,7 +1093,7 @@ label g_212222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_8
     return
 
-label g_112111:
+label g_112111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍천소축(風天小畜){/b}{/size}
 
@@ -974,7 +1115,7 @@ label g_112111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_9
     return
 
-label g_111211:
+label g_111211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천택이(天澤履){/b}{/size}
 
@@ -995,7 +1136,7 @@ label g_111211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_10
     return
 
-label g_222111:
+label g_222111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지천태(地天泰){/b}{/size}
 
@@ -1013,7 +1154,7 @@ label g_222111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_11
     return
 
-label g_111222:
+label g_111222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천지비(天地否){/b}{/size}
 
@@ -1035,7 +1176,7 @@ label g_111222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_12
     return
 
-label g_111121:
+label g_111121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천화동인(天火同人){/b}{/size}
 
@@ -1058,7 +1199,7 @@ label g_111121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_13
     return
 
-label g_121111:
+label g_121111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화천대유(火天大有){/b}{/size}
 
@@ -1084,7 +1225,7 @@ label g_121111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_14
     return
 
-label g_222122:
+label g_222122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지산겸(地山謙){/b}{/size}
 
@@ -1102,7 +1243,7 @@ label g_222122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_15
     return
 
-label g_221222:
+label g_221222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌지예(雷地豫){/b}{/size}
 
@@ -1125,7 +1266,7 @@ label g_221222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_16
     return
 
-label g_211221:
+label g_211221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택뇌수(澤雷隨){/b}{/size}
 
@@ -1144,7 +1285,7 @@ label g_211221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_17
     return
 
-label g_122112:
+label g_122112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산풍고(山風蠱){/b}{/size}
 
@@ -1167,7 +1308,7 @@ label g_122112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_18
     return
 
-label g_222211:
+label g_222211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지택임(地澤臨){/b}{/size}
 
@@ -1188,7 +1329,7 @@ label g_222211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_19
     return
 
-label g_112222:
+label g_112222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍지관(風地觀){/b}{/size}
 
@@ -1208,7 +1349,7 @@ label g_112222:
     return
 
 
-label g_121221:
+label g_121221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화뇌서합(火雷噬嗑){/b}{/size}
 
@@ -1238,7 +1379,7 @@ label g_121221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_21
     return
 
-label g_122121:
+label g_122121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산화비(山火賁){/b}{/size}
 
@@ -1260,7 +1401,7 @@ label g_122121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_22
     return
 
-label g_122222:
+label g_122222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산지박(山地剝){/b}{/size}
 
@@ -1283,7 +1424,7 @@ label g_122222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_23
     return
 
-label g_222221:
+label g_222221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지뇌복(地雷復){/b}{/size}
 
@@ -1302,7 +1443,7 @@ label g_222221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_24
     return
 
-label g_111221:
+label g_111221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천뇌무망(天雷无妄){/b}{/size}
 
@@ -1323,7 +1464,7 @@ label g_111221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_25
     return
 
-label g_122111:
+label g_122111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산천대축(山川大畜){/b}{/size}
 
@@ -1345,7 +1486,7 @@ label g_122111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_26
     return
 
-label g_122221:
+label g_122221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산뇌이(山雷頤){/b}{/size}
 
@@ -1365,7 +1506,7 @@ label g_122221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_27
     return
 
-label g_211112:
+label g_211112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택풍대과(澤風大過){/b}{/size}
 
@@ -1391,7 +1532,7 @@ label g_211112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_28
     return
 
-label g_212212:
+label g_212212(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}감위수(坎爲水){/b}{/size}
 
@@ -1412,7 +1553,7 @@ label g_212212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_29
     return
 
-label g_121121:
+label g_121121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}이위화(離爲火){/b}{/size}
 
@@ -1431,7 +1572,7 @@ label g_121121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_30
     return
 
-label g_211122:
+label g_211122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택산함(澤山咸){/b}{/size}
 
@@ -1451,7 +1592,7 @@ label g_211122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_31
     return
 
-label g_221112:
+label g_221112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌풍항(雷風恒){/b}{/size}
 
@@ -1467,7 +1608,7 @@ label g_221112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_32
     return
 
-label g_111122:
+label g_111122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천산둔(天山遯){/b}{/size}
 
@@ -1488,7 +1629,7 @@ label g_111122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_33
     return
 
-label g_221111:
+label g_221111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌천대장(雷天大壯){/b}{/size}
 
@@ -1508,7 +1649,7 @@ label g_221111:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_34
     return
 
-label g_121222:
+label g_121222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화지진(火地晉){/b}{/size}
 
@@ -1529,7 +1670,7 @@ label g_121222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_35
     return
 
-label g_222121:
+label g_222121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지화명이(地火明夷){/b}{/size}
 
@@ -1552,7 +1693,7 @@ label g_222121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_36
     return
 
-label g_112121:
+label g_112121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍화가인(風火家人){/b}{/size}
 
@@ -1573,7 +1714,7 @@ label g_112121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_37
     return
 
-label g_121211:
+label g_121211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화택규(火澤睽){/b}{/size}
 
@@ -1594,7 +1735,7 @@ label g_121211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_38
     return
 
-label g_212122:
+label g_212122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}수산건(水山蹇){/b}{/size}
 
@@ -1614,7 +1755,7 @@ label g_212122:
     return
 
 
-label g_221212:
+label g_221212(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌수해(雷水解){/b}{/size}
 
@@ -1638,7 +1779,7 @@ label g_221212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_40
     return
 
-label g_122211:
+label g_122211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}산택손(山澤損){/b}{/size}
 
@@ -1662,7 +1803,7 @@ label g_122211:
     return
 
 
-label g_112221:
+label g_112221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍뇌익(風雷益){/b}{/size}
 
@@ -1684,7 +1825,7 @@ label g_112221:
     return
 
 
-label g_211111:
+label g_211111(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택천쾌(澤天夬){/b}{/size}
 
@@ -1708,7 +1849,7 @@ label g_211111:
     return
 
 
-label g_111112:
+label g_111112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}천풍구(天風姤){/b}{/size}
 
@@ -1730,7 +1871,7 @@ label g_111112:
     return
 
 
-label g_211222:
+label g_211222(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택지췌(澤地萃){/b}{/size}
 
@@ -1749,7 +1890,7 @@ label g_211222:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_45
     return
 
-label g_222112:
+label g_222112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}지풍승(地風升){/b}{/size}
 
@@ -1775,7 +1916,7 @@ label g_222112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_46
     return
 
-label g_211212:
+label g_211212(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택수곤(澤水困){/b}{/size}
 
@@ -1797,7 +1938,7 @@ label g_211212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_47
     return
 
-label g_212112:
+label g_212112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}수풍정(水風井){/b}{/size}
 
@@ -1822,7 +1963,7 @@ label g_212112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_48
     return
 
-label g_211121:
+label g_211121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}택화혁(澤火革){/b}{/size}
 
@@ -1843,7 +1984,7 @@ label g_211121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_49
     return
 
-label g_121112:
+label g_121112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화풍정(火風鼎){/b}{/size}
 
@@ -1867,7 +2008,7 @@ label g_121112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_50
     return
 
-label g_221221:
+label g_221221(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}진위뇌(震爲雷){/b}{/size}
 
@@ -1889,7 +2030,7 @@ label g_221221:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_51
     return
 
-label g_122122:
+label g_122122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}간위산(艮爲山){/b}{/size}
 
@@ -1911,7 +2052,7 @@ label g_122122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_52
     return
 
-label g_112122:
+label g_112122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍산점(風山漸){/b}{/size}
 
@@ -1931,7 +2072,7 @@ label g_112122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_53
     return
 
-label g_221211:
+label g_221211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌택귀매(雷澤歸妹){/b}{/size}
 
@@ -1953,7 +2094,7 @@ label g_221211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_54
     return
 
-label g_221121:
+label g_221121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌화풍(雷火豊){/b}{/size}
 
@@ -1975,7 +2116,7 @@ label g_221121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_55
     return
 
-label g_121122:
+label g_121122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화산여(火山旅){/b}{/size}
 
@@ -2001,7 +2142,7 @@ label g_121122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_56
     return
 
-label g_112112:
+label g_112112(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}손위풍(巽爲風){/b}{/size}
 
@@ -2023,7 +2164,7 @@ label g_112112:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_57
     return
 
-label g_211211:
+label g_211211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}태위택(兌爲澤){/b}{/size}
 
@@ -2048,7 +2189,7 @@ label g_211211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_58
     return
 
-label g_112212:
+label g_112212(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍수환(風水渙){/b}{/size}
 
@@ -2068,7 +2209,7 @@ label g_112212:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_59
     return
 
-label g_212211:
+label g_212211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}수택절(水澤節){/b}{/size}
 
@@ -2087,7 +2228,7 @@ label g_212211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_60
     return
 
-label g_112211:
+label g_112211(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}풍택중부(風澤中孚){/b}{/size}
 
@@ -2110,7 +2251,7 @@ label g_112211:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_61
     return
 
-label g_221122:
+label g_221122(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}뇌산소과(雷山小過){/b}{/size}
 
@@ -2130,7 +2271,7 @@ label g_221122:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_62
     return
 
-label g_212121:
+label g_212121(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}수화기제(水火旣濟){/b}{/size}
 
@@ -2150,7 +2291,7 @@ label g_212121:
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_63
     return
 
-label g_121212:
+label g_121212(g__option=1):
     $ g_exp_messages = """
         {size=75}{b}화수미제(火水未濟){/b}{/size}
 
@@ -2170,4 +2311,5 @@ label g_121212:
     """
     
     call display_bricks_message_v3(g_exp_messages) from _call_display_bricks_message_v3_64
+
     return
